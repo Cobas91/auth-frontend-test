@@ -1,22 +1,16 @@
 
 import './App.css';
-import microsoftTeams from '@microsoft/teams-js';
+import * as microsoftTeams from '@microsoft/teams-js';
+import {useEffect} from "react";
 function App() {
-  microsoftTeams.app.initialize().then(()=>{
-    microsoftTeams.authentication.getAuthToken({
-      url: window.location.origin + "/authenticate",
-      width: 600,
-      height: 535,
-      successCallback: function (result) {
-        // Use result.accessToken to access the user
-      },
-      failureCallback: function (reason) {
-        alert(reason)
-      }
-    }).then(()=>{
-      microsoftTeams.app.notifySuccess()
-    })
-  })
+  useEffect(() => {
+    let authTokenRequest = {
+      successCallback: function(result) { console.log("Success: " + result); },
+      failureCallback: function(error) { console.log("Error getting token: " + error); }
+    };
+    microsoftTeams.authentication.getAuthToken(authTokenRequest);
+  }, []);
+
 
 
   return (
